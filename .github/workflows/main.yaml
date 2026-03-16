@@ -1,35 +1,40 @@
-# Full pipeline on push to main. Build, test, and deploy to dev + prod
-name: Main
+name: Build and deploy
 on:
-  workflow_dispatch:
   push:
     branches:
-      - 'main'
-
-
+      - main
+    paths-ignore:
+      - '**.md'
+      - '**.MD'
+      - '.gitignore'
+      - 'CODEOWNERS'
+      - 'LICENSE'
 jobs:
-  build:
-    name: Build
-    if: github.ref == 'refs/heads/main'
+  build_and_deploy:
+    name: Build, push and deploy
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
-    uses: navikt/familie-baks-gha-workflows/.github/workflows/build-maven-app.yaml@main # ratchet:exclude
-    with:
-      build-image: true
-      push-image: true
-      byosbom: target/classes/META-INF/sbom/application.cdx.json
-      java-version: '25'
-    secrets: inherit
-  deploy-dev:
-    name: Deploy dev
-    permissions:
-      contents: read
-      id-token: write
-    needs: [build]
-    uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main # ratchet:exclude
-    with:
-      image: ${{ needs.build.outputs.image }}
-      cluster: dev-gcp
-      resource: .nais/app-dev.yaml
-    secrets: inherit
+      actions: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # Fetch all history for what-changed action
+      - name: Determine what to do
+        id: changed-files
+        uses: "nais/what-changed@main"
+        with:
+          files: .nais/app.yaml #, topic.yaml, statefulset.yaml, etc.
+      - name: Build and push image and SBOM to OCI registry
+        if: steps.changed-files.outputs.changed != 'only-inputs'
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: teamfamilie
+      - name: Deploy to Nais
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/app-dev.yaml # same list as in changed-files step above
+          WORKLOAD_IMAGE: ${{ steps.docker-build-push.outputs.image }}
