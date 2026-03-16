@@ -26,6 +26,16 @@ jobs:
         uses: "nais/what-changed@main"
         with:
           files: .nais/app.yaml #, topic.yaml, statefulset.yaml, etc.
+      - name: Set up Java
+        if: steps.changed-files.outputs.changed != 'only-inputs'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+      - name: Build jar
+        if: steps.changed-files.outputs.changed != 'only-inputs'
+        run: mvn -B clean package
       - name: Build and push image and SBOM to OCI registry
         if: steps.changed-files.outputs.changed != 'only-inputs'
         uses: nais/docker-build-push@v0
