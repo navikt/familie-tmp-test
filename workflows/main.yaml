@@ -5,13 +5,6 @@ on:
   push:
     branches:
       - 'main'
-    paths-ignore:
-      - '**.md'
-      - '**.MD'
-      - '.github/**.yaml'
-      - '.gitignore'
-      - 'CODEOWNERS'
-      - 'LICENSE'
 
 jobs:
   build:
@@ -38,16 +31,4 @@ jobs:
       image: ${{ needs.build.outputs.image }}
       cluster: dev-gcp
       resource: .nais/app-dev.yaml
-    secrets: inherit
-  deploy-prod:
-    name: Deploy prod
-    permissions:
-      contents: read
-      id-token: write
-    needs: [build, deploy-dev]
-    uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main # ratchet:exclude
-    with:
-      image: ${{ needs.build.outputs.image }}
-      cluster: prod-gcp
-      resource: .nais/app-prod.yaml
     secrets: inherit
