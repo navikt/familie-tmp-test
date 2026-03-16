@@ -1,6 +1,6 @@
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-25
 
-COPY --chown=nonroot:nonroot COPY --chown=nonroot:nonroot COPY --chown=nonroot:nonroot target/*.jar /app/app.jar/
+COPY --chown=nonroot:nonroot target/*.jar /app/app.jar/
 WORKDIR /app
 
 ENV APP_NAME=familie-tmp-test
