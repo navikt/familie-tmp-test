@@ -8,7 +8,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/proxy-next-upstream-tries: '1'
 spec:
-  image: {{image}}
+  image: "{{image}}"
   port: 8094
 
   vault:

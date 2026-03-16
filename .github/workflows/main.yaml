@@ -1,5 +1,6 @@
 name: Build and deploy
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -25,7 +26,7 @@ jobs:
         id: changed-files
         uses: "nais/what-changed@main"
         with:
-          files: .nais/app.yaml #, topic.yaml, statefulset.yaml, etc.
+          files: .nais/app-dev.yaml #, topic.yaml, statefulset.yaml, etc.
       - name: Set up Java
         if: steps.changed-files.outputs.changed != 'only-inputs'
         uses: actions/setup-java@v4
