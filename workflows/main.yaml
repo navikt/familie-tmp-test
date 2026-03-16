@@ -5,6 +5,13 @@ on:
   push:
     branches:
       - 'main'
+  paths-ignore:
+    - '**.md'
+    - '**.MD'
+    - '.github/**.yaml'
+    - '.gitignore'
+    - 'CODEOWNERS'
+    - 'LICENSE'
 
 jobs:
   build:
@@ -25,7 +32,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    needs: [build]
+    needs: [ build ]
     uses: navikt/familie-baks-gha-workflows/.github/workflows/deploy.yaml@main # ratchet:exclude
     with:
       image: ${{ needs.build.outputs.image }}
