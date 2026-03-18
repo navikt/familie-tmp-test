@@ -13,7 +13,7 @@ spec:
 
   vault:
     enabled: false
-  gcp: # Database
+  gcp: # Databaseb
     sqlInstances:
       - type: POSTGRES_17 # IF This is changed, all data will be lost. Read on nais.io how to upgrade
         tier: db-custom-1-3840
