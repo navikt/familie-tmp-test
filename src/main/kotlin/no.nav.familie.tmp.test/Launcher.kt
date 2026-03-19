@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 @SpringBootApplication(scanBasePackages = ["no.nav.familie.tmp.test"])
 open class Launcher
 
+
 fun main(args: Array<String>) {
     SpringApplication.run(Launcher::class.java, *args)
 }
