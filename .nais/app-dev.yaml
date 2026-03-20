@@ -23,7 +23,7 @@ spec:
         diskAutoresize: true
         highAvailability: false
         databases:
-          - name: familie-tmp-test
+          - name: familie-tmp-test-4
             envVarPrefix: DB
 
   replicas:
