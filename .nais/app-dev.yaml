@@ -23,7 +23,7 @@ spec:
         diskAutoresize: true
         highAvailability: false
         databases:
-          - name: familie-baks-infotrygd-feed
+          - name: familie-tmp-test
             envVarPrefix: DB
 
   replicas:
