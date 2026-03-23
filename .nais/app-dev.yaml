@@ -13,7 +13,7 @@ spec:
 
   vault:
     enabled: false
-  gcp: # Databaseb
+  gcp: # Database
     sqlInstances:
       - type: POSTGRES_17 # IF This is changed, all data will be lost. Read on nais.io how to upgrade
         tier: db-custom-1-3840
@@ -23,12 +23,12 @@ spec:
         diskAutoresize: true
         highAvailability: false
         databases:
-          - name: familie-tmp-test-4
+          - name: familie-baks-infotrygd-feed
             envVarPrefix: DB
 
   replicas:
-    min: 0
-    max: 0
+    min: 1
+    max: 1
   resources:
     limits:
       memory: 544Mi
